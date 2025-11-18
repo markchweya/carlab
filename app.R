@@ -1,4 +1,4 @@
-# app.R — Cinematic Car Performance Explorer (clean version)
+# app.R — Cinematic Car Performance Explorer (fixed tabs)
 
 library(shiny)
 library(ggplot2)
@@ -253,7 +253,7 @@ ui <- fluidPage(
       )
     ),
     
-    # main panels controlled by nav buttons
+    # main panels (note the titles now!)
     tabsetPanel(
       id       = "main_tabs",
       type     = "hidden",
@@ -261,7 +261,7 @@ ui <- fluidPage(
       
       # ---------- HOME ----------
       tabPanel(
-        value = "home",
+        title = "Home", value = "home",
         div(
           class = "fade-panel",
           fluidRow(
@@ -301,7 +301,7 @@ ui <- fluidPage(
       
       # ---------- COMPARE ----------
       tabPanel(
-        value = "compare",
+        title = "Compare", value = "compare",
         div(
           class = "fade-panel",
           fluidRow(
@@ -381,7 +381,7 @@ ui <- fluidPage(
       
       # ---------- INSIGHTS ----------
       tabPanel(
-        value = "insight",
+        title = "Insights", value = "insight",
         div(
           class = "fade-panel",
           fluidRow(
