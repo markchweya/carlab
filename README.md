@@ -1,4 +1,4 @@
-# CarLab 🚗✨ (Vision Pro / Hologram Edition)
+# CarLab 🚗✨ 
 
 CarLab is an interactive **R Shiny** web app for comparing cars using:
 1) a **preference-based FitScore ranking**, and  
