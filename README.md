@@ -1,55 +1,79 @@
-# CarLab 🚗📊
-**Performance. Style. Trade-offs.**  
-A Shiny app that helps users compare cars in seconds using (1) a preference-based ranking score and (2) a multivariate PCA + clustering view.
+# CarLab 🚗✨ (Vision Pro / Hologram Edition)
 
-## Live Demo
-- App: https://markchweya.shinyapps.io/carlab/
+CarLab is an interactive **R Shiny** web app for comparing cars using:
+1) a **preference-based FitScore ranking**, and  
+2) a multivariate **PCA + k-means clustering** view to understand performance trade-offs.
 
-## What CarLab does
-CarLab lets you:
-- **Rank cars by your preferences** (e.g., prioritize mpg, horsepower, lightweight, or faster acceleration)
-- **Filter the dataset** (e.g., cylinders, transmission type, minimum mpg)
-- **Explore trade-offs visually** using **PCA** (dimensionality reduction)
-- **Group similar cars** using **k-means clustering** on PCA scores
-- **Inspect the raw data** behind the visuals
+Live app: https://markchweya.shinyapps.io/carlab/
 
-## Key Features
-### 1) Preference-based ranking
-Move sliders to set how much you care about:
-- Fuel economy
-- Engine power
-- Lightweight build
-- Fast acceleration
+---
 
-CarLab combines the selected factors into a single score and returns a ranked “best match” list.
+## What the app does
 
-### 2) Multivariate analytics (PCA + Clustering)
-- Choose which variables to include in PCA
-- View a 2D performance map (PC1 vs PC2)
-- See explained variance per component
-- Understand feature influence (loadings)
-- See cluster profiles for interpretability
+### ✅ Compare (FitScore ranking)
+- Set your priorities (dropdown levels):  
+  - Fuel economy (mpg)  
+  - Engine power (hp)  
+  - Lightweight (lower `wt`)  
+  - Fast acceleration (lower `qsec`)
+- Apply practical filters:
+  - Cylinders
+  - Transmission (Automatic/Manual)
+  - Minimum mpg
+- Instantly get:
+  - A **Best match** car card
+  - A **Top 10 ranked list** you can tap to open a zoom modal
 
-## Data
-The app is built around a compact car-performance dataset with variables such as:
-- mpg, hp, wt, qsec, drat (and related metadata like cylinders/transmission)
+**How FitScore is computed**
+- Each feature is standardized (z-score).
+- Weight and acceleration are flipped so “better” is higher (`-wt`, `-qsec`).
+- Dropdown priorities map to weights: Low=1, Medium=2, High=3, Very high=4.
+- Final score = weighted sum of standardized features.
 
-## Tech Stack
+---
+
+### 📊 Insights (PCA + Clustering)
+- Choose which variables to include in PCA (mpg, hp, wt, qsec, drat)
+- View a **PC1 vs PC2 performance map**
+- Run **k-means clustering (k = 2–6)** on PC1–PC2
+- Optional car labels
+- View supporting tables:
+  - Explained variance (eigenvalues, proportions, cumulative)
+  - Feature influence (PCA loadings)
+  - Cluster profiles (avg mpg, hp, wt, qsec, cars per cluster)
+- Click a point (car icon) to **zoom** into a car modal with details
+
+---
+
+## Dataset
+- Uses the built-in R dataset: **`mtcars`**
+- Adds helper fields:
+  - `car` (name from rownames)
+  - `transmission` (Automatic/Manual from `am`)
+  - `cylinders` (factor from `cyl`)
+
+---
+
+## Tech stack
 - **R**
 - **Shiny**
-- Typical supporting packages: `ggplot2`, `dplyr`, `stats` (PCA + kmeans), and UI helpers (depending on your implementation)
+- **ggplot2** (visuals)
+- **dplyr** (data wrangling)
+- **DT** (raw data table modal)
+- **bslib** (theme + styling support)
 
-## How it works (high-level)
-1. **Normalize/scale** numeric features (so variables are comparable).
-2. **Preference score**: weight features based on slider priorities → compute a composite score → rank cars.
-3. **PCA**: reduce selected variables into principal components for 2D visualization.
-4. **Clustering**: run k-means on PCA scores (PC1–PC2) to group similar cars.
+---
+
+## UI / UX highlights
+- “Hologram / Vision Pro” glassmorphism cards
+- Parallax motion layer (pure JS)
+- Rotating “wheel text” feature callouts on the Home orb
+- Tap-to-zoom car cards + plot click-to-zoom modal
+
+---
 
 ## Run locally
-### Option A: RStudio (recommended)
-1. Download/clone this repo
-2. Open the project in RStudio
-3. Install dependencies (if needed)
-4. Run:
+
+### 1) Install packages
 ```r
-shiny::runApp()
+install.packages(c("shiny", "ggplot2", "dplyr", "DT", "bslib"))
